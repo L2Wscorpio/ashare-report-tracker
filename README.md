@@ -57,6 +57,8 @@ Python 示例依赖 `requests`：`pip install requests`
     ├── python/         Python 调用示例
     ├── curl/           Shell 示例
     └── javascript/     JS fetch 示例
+├── skills/
+│   └── ashare_report_tracker/    OpenClaw / QwenPaw Skill
 ```
 
 ## 数据覆盖
