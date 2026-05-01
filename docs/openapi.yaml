@@ -1,0 +1,176 @@
+openapi: "3.0.3"
+info:
+  title: 验真器 API v1
+  description: |
+    基于真实研报的六窗口跟踪数据 API。
+    每份数据对应一篇研报的发布后 30/90/180/270/360/450 天收益率与峰值。
+  version: "1.0.0"
+servers:
+  - url: https://api.ocshare.cc
+
+paths:
+  /v1/report/outcome:
+    get:
+      summary: 单报告六窗口数据
+      parameters:
+        - name: report_id
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: 报告 ID
+      responses:
+        "200":
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportOutcome"
+        "404":
+          description: 报告未找到
+
+  /v1/reports:
+    get:
+      summary: 报告发现（搜索）
+      parameters:
+        - name: analyst
+          in: query
+          schema:
+            type: string
+          description: 分析师姓名（模糊匹配）
+        - name: stock
+          in: query
+          schema:
+            type: string
+          description: 股票代码（精确匹配，6 位）
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+            maximum: 100
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        "200":
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportList"
+        "400":
+          description: 参数错误
+
+  /health:
+    get:
+      summary: 健康检查
+      responses:
+        "200":
+          description: 服务正常
+
+components:
+  schemas:
+    ReportOutcome:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 0
+        data:
+          type: object
+          properties:
+            report_id:
+              type: integer
+            publish_date:
+              type: string
+              format: date
+            stock_code:
+              type: string
+            stock_name:
+              type: string
+            rating:
+              type: string
+            analysts:
+              type: array
+              items:
+                $ref: "#/components/schemas/Analyst"
+            institution_id:
+              type: integer
+            institution:
+              type: string
+            t1_date:
+              type: string
+              format: date
+            windows:
+              type: array
+              items:
+                $ref: "#/components/schemas/Window"
+
+    ReportList:
+      type: object
+      properties:
+        code:
+          type: integer
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportMeta"
+        meta:
+          type: object
+          properties:
+            total:
+              type: integer
+            limit:
+              type: integer
+            offset:
+              type: integer
+
+    ReportMeta:
+      type: object
+      properties:
+        report_id:
+          type: integer
+        publish_date:
+          type: string
+        analyst_name:
+          type: string
+        institution:
+          type: string
+        stock_code:
+          type: string
+        stock_name:
+          type: string
+        rating_text:
+          type: string
+        title:
+          type: string
+
+    Analyst:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+
+    Window:
+      type: object
+      properties:
+        days:
+          type: integer
+          description: 日历窗口大小
+        n:
+          type: integer
+          description: 窗口内实际交易日数
+        ret:
+          type: number
+          description: 窗口末收益率
+        peak_ret:
+          type: number
+          description: 窗口内峰值收益率
+        peak_day:
+          type: integer
+          description: 峰值出现交易日序号
