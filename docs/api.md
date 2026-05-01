@@ -66,14 +66,16 @@ GET /v1/report/outcome?report_id={id}
         "n":         13,
         "ret":       -0.1035,
         "peak_ret":  0.0000,
-        "peak_day":  0
+        "peak_day":  0,
+        "peak_date": "2017-01-04"
       },
       {
         "days":      90,
         "n":         53,
         "ret":       -0.0451,
         "peak_ret":  0.0135,
-        "peak_day":  41
+        "peak_day":  41,
+        "peak_date": "2017-03-06"
       }
     ]
   }
@@ -106,6 +108,7 @@ GET /v1/report/outcome?report_id={id}
 | `ret` | float | 窗口末收益率。按后复权中间价计算 |
 | `peak_ret` | float | 窗口内峰值收益率。窗口内最高中间价日 |
 | `peak_day` | integer | 峰值出现交易日序号（t1_date = 第 0 天） |
+| `peak_date` | string | 峰值出现实际日期 |
 
 **收益计算**
 

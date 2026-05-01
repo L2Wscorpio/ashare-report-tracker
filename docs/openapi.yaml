@@ -180,3 +180,7 @@ components:
         peak_day:
           type: integer
           description: 峰值出现交易日序号
+        peak_date:
+          type: string
+          format: date
+          description: 峰值出现实际日期
