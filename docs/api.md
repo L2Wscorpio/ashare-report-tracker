@@ -1,4 +1,4 @@
-# API v1 文档
+# A股研报跟踪数据 API v1
 
 **Base URL**: `https://api.ocshare.cc`
 

@@ -1,5 +1,5 @@
 #!/bin/bash
-# 验真器 API 使用示例 — curl
+# A股研报跟踪数据 API 使用示例 — curl
 
 BASE="https://api.ocshare.cc"
 

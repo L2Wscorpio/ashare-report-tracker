@@ -1,8 +1,8 @@
 openapi: "3.0.3"
 info:
-  title: 验真器 API v1
+  title: A股研报跟踪数据 API v1
   description: |
-    基于真实研报的六窗口跟踪数据 API。
+    基于 A 股真实研报的六窗口跟踪数据。
     每份数据对应一篇研报的发布后 30/90/180/270/360/450 天收益率与峰值。
   version: "1.0.0"
 servers:

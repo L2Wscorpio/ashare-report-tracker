@@ -1,5 +1,5 @@
 """
-验真器 API 使用示例 — Python
+A股研报跟踪数据 API 使用示例 — Python
 """
 import requests
 
