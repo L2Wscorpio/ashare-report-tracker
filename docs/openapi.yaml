@@ -179,7 +179,7 @@ components:
           description: 窗口内峰值收益率
         peak_day:
           type: integer
-          description: 峰值出现交易日序号
+          description: 峰值出现日（从 T+1 起的交易日偏移，0=入场日）
         peak_date:
           type: string
           format: date

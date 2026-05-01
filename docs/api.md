@@ -110,7 +110,7 @@ GET /v1/report/outcome?report_id={id}
 | `n` | integer | 窗口内实际交易日数 |
 | `ret` | float | 窗口末收益率。按后复权中间价计算 |
 | `peak_ret` | float | 窗口内峰值收益率。窗口内最高中间价日 |
-| `peak_day` | integer | 峰值出现交易日序号（t1_date = 第 0 天） |
+| `peak_day` | integer | 峰值出现日（从 t1_date 起的交易日偏移，0 = 入场日） |
 | `peak_date` | string | 峰值出现实际日期 |
 
 **收益计算**

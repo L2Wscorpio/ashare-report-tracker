@@ -37,7 +37,7 @@ curl "https://api.ocshare.cc/v1/reports?analyst=陈显帆&limit=3"
 |:---|:---|
 | `ret` | 窗口末收益率 |
 | `peak_ret` | 窗口内峰值收益率 |
-| `peak_day` | 峰值出现交易日序号 |
+| `peak_day` | 峰值出现日（从 T+1 起的交易日偏移，0=入场日） |
 | `peak_date` | 峰值出现实际日期 |
 | `n` | 窗口内实际交易日数 |
 
