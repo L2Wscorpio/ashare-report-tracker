@@ -38,6 +38,7 @@ curl "https://api.ocshare.cc/v1/reports?analyst=陈显帆&limit=3"
 | `ret` | 窗口末收益率 |
 | `peak_ret` | 窗口内峰值收益率 |
 | `peak_day` | 峰值出现交易日序号 |
+| `peak_date` | 峰值出现实际日期 |
 | `n` | 窗口内实际交易日数 |
 
 收益率统一使用**后复权中间价**计算： `(开盘价 + 收盘价) / 2`
