@@ -9,6 +9,7 @@
 ```
 Base URL: https://api.ocshare.cc
 文档:     https://api.ocshare.cc/v1/docs
+认证:     无需 API Key，按 IP 限制调用次数
 限流:     每 IP 每天 100 次
 ```
 
@@ -21,6 +22,8 @@ curl https://api.ocshare.cc/v1/report/outcome?report_id=21669
 # 搜索分析师
 curl "https://api.ocshare.cc/v1/reports?analyst=陈显帆&limit=3"
 ```
+
+搜索接口支持 `limit`（默认20，最大100）和 `offset` 分页。完整参数见 `docs/api.md`。
 
 ## 数据结构
 
@@ -64,4 +67,7 @@ MIT
 
 ## 免责
 
-本 API 提供的收益率数据为历史统计结果，不代表未来表现。不构成任何投资建议。
+- 本 API 仅提供研报公开元数据（标题、来源链接）及历史统计数据，**不提供研报全文**
+- 收益率数据均为历史统计结果，不代表未来表现
+- 不构成任何投资建议，用户应自行判断和承担风险
+- 代码许可（MIT）仅适用于本仓库中的代码和文档，不适用于 API 服务本身
