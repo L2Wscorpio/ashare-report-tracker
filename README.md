@@ -27,6 +27,8 @@ curl "https://api.ocshare.cc/v1/reports?analyst=陈显帆&limit=3"
 
 搜索接口支持 `limit`（默认20，最大100）和 `offset` 分页。完整参数见 `docs/api.md`。
 
+Python 示例依赖 `requests`：`pip install requests`
+
 ## 数据结构
 
 每篇研报对应六个时间窗口：**30 / 90 / 180 / 270 / 360 / 450 天**。
