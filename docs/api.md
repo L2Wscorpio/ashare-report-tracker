@@ -47,6 +47,8 @@ GET /v1/report/outcome?report_id={id}
   "code": 0,
   "data": {
     "report_id":      21669,
+    "title":          "公司点评：城轨信号国产化+环保PPP助力公司未来增长",
+    "source_url":     "https://pdf.dfcfw.com/pdf/H3_AP201701030232344245_1.pdf",
     "publish_date":   "2017-01-03",
     "stock_code":     "000925",
     "stock_name":     "众合科技",
@@ -83,6 +85,8 @@ GET /v1/report/outcome?report_id={id}
 | 字段 | 类型 | 说明 |
 |:---|:---|:---|
 | `report_id` | integer | 报告唯一 ID |
+| `title` | string | 研报标题 |
+| `source_url` | string | 东方财富研报原文链接 |
 | `publish_date` | string | 报告发布日期 |
 | `stock_code` | string | 股票代码（6位） |
 | `stock_name` | string | 股票名称 |

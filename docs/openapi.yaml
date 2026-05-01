@@ -84,6 +84,12 @@ components:
           properties:
             report_id:
               type: integer
+            title:
+              type: string
+              description: 研报标题
+            source_url:
+              type: string
+              description: 东方财富研报原文链接
             publish_date:
               type: string
               format: date
