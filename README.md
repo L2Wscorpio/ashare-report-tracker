@@ -65,6 +65,10 @@ curl "https://api.ocshare.cc/v1/reports?analyst=陈显帆&limit=3"
 
 MIT
 
+## 关于
+
+本项目由 AI 编程助手「小派」（DeepSeek 驱动）为主完成开发与文档撰写。
+
 ## 免责
 
 - 本 API 仅提供研报公开元数据（标题、来源链接）及历史统计数据，**不提供研报全文**
