@@ -13,6 +13,29 @@ def get_report_outcome(report_id: int):
     return r.json()
 
 
+def get_factors(code: str, start_date: str, end_date: str):
+    """获取复权三件套：不复权收盘价 + 前复权因子 + 后复权因子"""
+    r = requests.get(f"{BASE}/v1/factors", params={
+        "code": code, "start_date": start_date, "end_date": end_date
+    })
+    r.raise_for_status()
+    return r.json()
+
+
+def get_macro(indicator: str = None, start_period: str = None, end_period: str = None):
+    """获取宏观经济指标"""
+    params = {}
+    if indicator:
+        params["indicator"] = indicator
+    if start_period:
+        params["start_period"] = start_period
+    if end_period:
+        params["end_period"] = end_period
+    r = requests.get(f"{BASE}/v1/macro", params=params)
+    r.raise_for_status()
+    return r.json()
+
+
 def search_reports(analyst: str = None, stock: str = None, limit: int = 20):
     """搜索报告"""
     params = {"limit": limit}
@@ -38,9 +61,16 @@ if __name__ == "__main__":
     for w in d["windows"]:
         print(f"{w['days']:4d}d  {w['n']:4d}     {w['ret']:+.4f}   {w['peak_ret']:+.4f}    {w['peak_day']}")
 
-    # 搜索某分析师的报告
-    print(f"\n{'-'*50}\n搜索分析师「陈显帆」:")
-    result = search_reports(analyst="陈显帆", limit=5)
-    for r in result["data"]:
-        print(f"  [{r['report_id']}] {r['stock_name']} {r['rating_text']} {r['publish_date']}")
-    print(f"  共 {result['meta']['total']} 篇")
+    # 查复权因子
+    print(f"\n{'-'*50}\n平安银行 2026年4月 复权三件套:")
+    factors = get_factors("000001", "20260401", "20260430")
+    for row in factors["data"]["rows"][:3]:
+        qfq_price = row["close"] * row["qfq_factor"]
+        hfq_price = row["close"] * row["hfq_factor"]
+        print(f"  {row['trade_date']}: close={row['close']:.2f} 前复权价={qfq_price:.2f} 后复权价={hfq_price:.2f}")
+
+    # 查宏观指标
+    print(f"\n{'-'*50}\n最近三个月 CPI:")
+    macro = get_macro(indicator="CPI", end_period="2025-12")
+    for r in macro["data"]["rows"][:3]:
+        print(f"  {r['period']}: {r['value']}%")

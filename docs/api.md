@@ -4,7 +4,7 @@
 
 ## 概述
 
-本 API 提供基于真实研报的六窗口跟踪数据。每份数据对应一篇研报，包含报告发布后 30/90/180/270/360/450 天的收益率和峰值数据。
+本 API 提供基于真实研报的六窗口跟踪数据、复权因子（前复权+后复权）、宏观经济指标。每份数据对应一篇研报，包含报告发布后 30/90/180/270/360/450 天的收益率和峰值数据。
 
 ### 核心原则
 
@@ -168,7 +168,109 @@ GET /v1/reports?analyst={name}&stock={code}
 
 ---
 
-### 3. 健康检查
+### 3. 复权三件套
+
+```
+GET /v1/factors?code={code}&start_date={YYYYMMDD}&end_date={YYYYMMDD}
+```
+
+返回指定股票的不复权收盘价、前复权因子、后复权因子。用户可自行计算任意复权价格，验证收益计算逻辑。
+
+```
+后复权价格 = close × hfq_factor
+前复权价格 = close × qfq_factor
+```
+
+**参数**
+
+| 参数 | 类型 | 必填 | 说明 |
+|:---|:---|:---|:---|
+| `code` | string | 是 | 股票代码，6位数字（如 000001） |
+| `start_date` | string | 是 | 起始日期，YYYYMMDD |
+| `end_date` | string | 是 | 结束日期，YYYYMMDD |
+| `page` | integer | 否 | 页码，默认 1 |
+| `page_size` | integer | 否 | 每页条数，默认 100，最大 1000 |
+
+**响应**
+
+```json
+{
+  "code": 0,
+  "data": {
+    "code": "000001.SZ",
+    "rows": [
+      {
+        "trade_date": "2026-04-01",
+        "close": 11.15,
+        "qfq_factor": 1.0,
+        "hfq_factor": 5.646637
+      }
+    ],
+    "meta": {
+      "total": 17,
+      "page": 1,
+      "page_size": 100,
+      "description": "close=none(不复权), qfq_price=close*qfq_factor, hfq_price=close*hfq_factor"
+    }
+  }
+}
+```
+
+| 字段 | 类型 | 说明 |
+|:---|:---|:---|
+| `close` | float | 不复权收盘价 |
+| `qfq_factor` | float | 前复权因子。将不复权价格转换为前复权价格 |
+| `hfq_factor` | float | 后复权因子。将不复权价格转换为后复权价格 |
+
+> **与 Tushare 的差异**：Tushare 的 `adj_factor` 接口仅提供前复权因子，不提供后复权因子。本接口同时提供两个因子，用户无需分别调取价格和因子接口再反推。
+
+---
+
+### 4. 宏观指标
+
+```
+GET /v1/macro?indicator={name}&start_period={YYYY-MM}&end_period={YYYY-MM}
+```
+
+查询宏观经济指标历史数据。
+
+**参数**
+
+| 参数 | 类型 | 必填 | 说明 |
+|:---|:---|:---|:---|
+| `indicator` | string | 否 | 指标名（CPI/PMI/M2等），不传返回全部 |
+| `start_period` | string | 否 | 起始月份，YYYY-MM |
+| `end_period` | string | 否 | 结束月份，YYYY-MM |
+| `page` | integer | 否 | 页码，默认 1 |
+| `page_size` | integer | 否 | 每页条数，默认 100，最大 1000 |
+
+**响应**
+
+```json
+{
+  "code": 0,
+  "data": {
+    "rows": [
+      {"indicator": "CPI", "period": "2025-08", "value": 0.4},
+      {"indicator": "CPI", "period": "2025-07", "value": -0.1}
+    ],
+    "meta": {"total": 354, "page": 1, "page_size": 100}
+  }
+}
+```
+
+**可用指标**
+
+| 指标 | 时间范围 | 行数 |
+|:---|:---|:---|
+| CPI | 1996-02 ~ 2025-08 | 354 |
+| PPI | — | 363 |
+| PMI_* | — | 220 |
+| M2_* | 2008-01 ~ 2026-03 | 1,971 |
+
+---
+
+### 5. 健康检查
 
 ```
 GET /health
@@ -197,8 +299,10 @@ GET /health
 - 报告来源：东方财富研报数据
 - 时间范围：2017-01-02 至今
 - 总报告数：约 13.6 万篇
-- 行情数据：全 A 股日线（后复权、前复权、不复权）
-- 更新频率：每日增量
+- 行情数据：全 A 股日线（不复权）+ 复权因子（前复权、后复权）
+- 宏观数据：CPI、PPI、PMI、M2
+- 指数数据：沪深300、创业板指
+- 更新频率：行情及复权因子每日更新，宏观指标每月更新
 
 ## 免责声明
 
